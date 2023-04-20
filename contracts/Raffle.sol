@@ -14,6 +14,8 @@ contract Raffle is VRFConsumerBaseV2 {
     bytes32 private immutable i_gasLane
     uint64 private immutable i_subscriptionId;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
+    uint32 private constant NUM_WORDS = 1;
+    uint32 private immutable i_callbackGasLimit;
 
     // Events
     event RaffleEnter(address indexed player);
@@ -23,11 +25,13 @@ contract Raffle is VRFConsumerBaseV2 {
         uint256 entranceFee,
         bytes32 gasLane,
         uint64 subscriptionId,
+        uint32 callbackGasLimit,
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         i_entranceFee = entranceFee;
         i_vrfCoordinator = VRFCoordintaorV2Interface(vrfCoordinator);
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
+        i_callbackGasLimit = callbackGasLimit;
     }
 
     function enterRaffle() public payable {
@@ -46,8 +50,8 @@ contract Raffle is VRFConsumerBaseV2 {
                 i_gasLane, // max price for payment for gwei
                 i_subscriptionId, // subscription id
                 REQUEST_CONFIRMATIONS, // minimum number of confirmations on chainlink node
-                callbackGasLimit, 
-                numWords
+                i_callbackGasLimit, // gas limit for callback
+                NUM_WORDS // number of random words to return
             )
     }
 
