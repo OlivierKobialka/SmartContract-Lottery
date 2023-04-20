@@ -25,9 +25,11 @@ contract Raffle {
         emit RaffleEnter(msg.sender);
     }
 
-    function pickRandomWinner() external {
+    function requestRandomWinner() external {
         // request random number from Chainlink VRF | 2 transaction process
     }
+
+    function fulfillRandomWords() internal override {}
 
     function getEntranceFee() public view returns (uint256) {
         return i_entranceFee;
