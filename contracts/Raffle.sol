@@ -25,13 +25,15 @@ contract Raffle {
         emit RaffleEnter(msg.sender);
     }
 
-    // function pickRandomWinner() {}
+    function pickRandomWinner() external {
+        // request random number from Chainlink VRF | 2 transaction process
+    }
 
     function getEntranceFee() public view returns (uint256) {
         return i_entranceFee;
     }
 
-    function getPlayer() public view returns (address) {
+    function getPlayer(uint256 index) public view returns (address) {
         return s_players[index];
     }
 }
