@@ -8,6 +8,9 @@ contract Raffle {
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
 
+    // Events
+    event RaffleEnter(address indexed player);
+
     constructor(uint256 entranceFee) {
         i_entranceFee = entranceFee;
     }
@@ -18,6 +21,8 @@ contract Raffle {
         }
 
         s_players.push(payable(msg.sender));
+        // Event
+        emit RaffleEnter(msg.sender);
     }
 
     // function pickRandomWinner() {}
