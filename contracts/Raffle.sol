@@ -11,16 +11,19 @@ contract Raffle is VRFConsumerBaseV2 {
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
     VRFCoordintaorV2Interface private immutable i_vrfCoordinator;
+    bytes32 private immutable i_gasLane
 
     // Events
     event RaffleEnter(address indexed player);
 
     constructor(
         address vrfCoordinatorV2,
-        uint256 entranceFee
+        uint256 entranceFee,
+        bytes32 gasLane
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         i_entranceFee = entranceFee;
         i_vrfCoordinator = VRFCoordintaorV2Interface(vrfCoordinator);
+        i_gasLane = gasLane;
     }
 
     function enterRaffle() public payable {
@@ -35,6 +38,13 @@ contract Raffle is VRFConsumerBaseV2 {
 
     function requestRandomWinner() external {
         // request random number from Chainlink VRF | 2 transaction process
+        i_vrfCoordinator.requestRandomWords(
+                i_gasLane, // max price for payment for gwei
+                s_subscriptionId,
+                requestConfirmations, 
+                callbackGasLimit, 
+                numWords
+            )
     }
 
     function fulfillRandomWords(
