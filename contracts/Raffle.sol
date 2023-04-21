@@ -4,13 +4,19 @@ pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol"
+import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "hardhat/console.sol";
 
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
+    // types
+    enum RaffleState {
+        OPEN,
+        CALCULATING
+    }
+
     //  State variables
     uint256 private immutable i_entranceFee;
     uint256 private immutable i_interval;
@@ -24,7 +30,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     // Lottery Variables
     address private s_recentWinner;
-
+    RaffleState private s_raffleState;
     // Events
     event RaffleEnter(address indexed player);
     event RequestedRaffleWinner(uint256 indexed requestId);
@@ -44,6 +50,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         i_subscriptionId = subscriptionId;
         i_callbackGasLimit = callbackGasLimit;
         i_interval = interval;
+        s_raffleState = RaffleState.OPEN;
     }
 
     function enterRaffle() public payable {
@@ -62,9 +69,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      * @return upkeepNeeded is true if the keeper should call performUpkeep
      */
 
-    function checkUpKeep(bytes calldata /*checkData*/) external override {
-
-    }
+    function checkUpKeep(bytes calldata /*checkData*/) external override {}
 
     function requestRandomWinner() external {
         // request random number from Chainlink VRF | 2 transaction process
