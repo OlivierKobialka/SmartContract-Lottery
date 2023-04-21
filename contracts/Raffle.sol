@@ -89,10 +89,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         bool hasPlayers = (s_playes.length > 0);
         bool hasBalance = address(this).balance > 0;
         // return true if all conditions are met
-        bool upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
+        upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
     }
 
-    function requestRandomWinner() external {
+    function performUpkeep(bytes calldata /*checkData*/) external override {
         s_raffleState = RaffleState.CALCULATING;
         // request random number from Chainlink VRF | 2 transaction process
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
