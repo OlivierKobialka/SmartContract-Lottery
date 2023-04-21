@@ -80,6 +80,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpKeep(bytes calldata /*checkData*/) external override {
         bool isOpen = (RaffleState.OPEN == s_raffleState);
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
+        bool hasPlayers = (s_playes.length > 0);
+        bool hasBalance = address(this).balance > 0;
+        // return true if all conditions are met
+        bool upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
     }
 
     function requestRandomWinner() external {
