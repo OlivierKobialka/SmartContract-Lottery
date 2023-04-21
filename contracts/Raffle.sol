@@ -32,6 +32,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // Lottery Variables
     address private s_recentWinner;
     RaffleState private s_raffleState;
+    uint256 private s_lastTimeStamp;
     // Events
     event RaffleEnter(address indexed player);
     event RequestedRaffleWinner(uint256 indexed requestId);
@@ -52,6 +53,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         i_callbackGasLimit = callbackGasLimit;
         i_interval = interval;
         s_raffleState = RaffleState.OPEN;
+        s_lastTimeStamp = block.timestamp;
     }
 
     function enterRaffle() public payable {
@@ -73,7 +75,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      * @return upkeepNeeded is true if the keeper should call performUpkeep
      */
 
-    function checkUpKeep(bytes calldata /*checkData*/) external override {}
+    function checkUpKeep(bytes calldata /*checkData*/) external override {
+        bool isOpen = (RaffleState.OPEN == s_raffleState);
+
+    }
 
     function requestRandomWinner() external {
         s_raffleState = RaffleState.CALCULATING;
