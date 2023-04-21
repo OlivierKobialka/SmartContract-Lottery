@@ -9,6 +9,7 @@ import "hardhat/console.sol";
 
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
+error Raffle__NotOpen();
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // types
@@ -57,6 +58,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (msg.value < i_entranceFee) {
             revert Raffle__NotEnoughETHEntered();
         }
+        if (s_raffleState != RaffleState.OPEN) {
+            revert Raffle__NotOpen;
+        }
 
         s_players.push(payable(msg.sender));
         // Event
@@ -72,6 +76,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpKeep(bytes calldata /*checkData*/) external override {}
 
     function requestRandomWinner() external {
+        s_raffleState = RaffleState.CALCULATING;
         // request random number from Chainlink VRF | 2 transaction process
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane, // max price for payment for gwei
@@ -88,6 +93,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         uint256[] memory randomWords
     ) internal override {
         // use random number to select winner
+        s_raffleState = RaffleState.OPEN;
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
