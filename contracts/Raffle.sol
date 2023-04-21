@@ -4,12 +4,13 @@ pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol"
 import "hardhat/console.sol";
 
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 
-contract Raffle is VRFConsumerBaseV2 {
+contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     //  State variables
     uint256 private immutable i_entranceFee;
     uint256 private immutable i_interval;
@@ -54,6 +55,12 @@ contract Raffle is VRFConsumerBaseV2 {
         // Event
         emit RaffleEnter(msg.sender);
     }
+
+    /**
+     * @dev 
+     */
+
+    function checkUpKeep(bytes calldata checkData) external override {}
 
     function requestRandomWinner() external {
         // request random number from Chainlink VRF | 2 transaction process
