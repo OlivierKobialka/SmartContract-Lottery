@@ -57,10 +57,14 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     /**
-     * @dev 
+     * @dev this is the function that will be called by the keeper
+     * @param checkData is the data that will be passed to the checkUpkeep function
+     * @return upkeepNeeded is true if the keeper should call performUpkeep
      */
 
-    function checkUpKeep(bytes calldata checkData) external override {}
+    function checkUpKeep(bytes calldata /*checkData*/) external override {
+
+    }
 
     function requestRandomWinner() external {
         // request random number from Chainlink VRF | 2 transaction process
