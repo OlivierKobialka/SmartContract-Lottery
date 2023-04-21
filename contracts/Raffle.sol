@@ -33,6 +33,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     address private s_recentWinner;
     RaffleState private s_raffleState;
     uint256 private s_lastTimeStamp;
+    uint256 private immutable i_interval;
+
     // Events
     event RaffleEnter(address indexed player);
     event RequestedRaffleWinner(uint256 indexed requestId);
@@ -77,7 +79,6 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function checkUpKeep(bytes calldata /*checkData*/) external override {
         bool isOpen = (RaffleState.OPEN == s_raffleState);
-
     }
 
     function requestRandomWinner() external {
