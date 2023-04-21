@@ -10,6 +10,11 @@ import "hardhat/console.sol";
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 error Raffle__NotOpen();
+error Raffle__UpkeepNotNeeded(
+    uint256 currentBalance,
+    uint256 numPlayers,
+    uint256 raffleState
+);
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // types
@@ -80,7 +85,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpKeep(
         bytes calldata /*checkData*/
     )
-        external
+        public
         override
         returns (bool upkeepNeeded, bytes memory /*performData*/)
     {
@@ -93,6 +98,15 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function performUpkeep(bytes calldata /*checkData*/) external override {
+        (bool upkeepNeeded, ) = checkUpKeep("");
+        if (!upkeepNeeded) {
+            revert Raffle__UpkeepNotNeeded(
+                address(this).balande,
+                s_players.length,
+                uint256(s_raffleState)
+            );
+        }
+
         s_raffleState = RaffleState.CALCULATING;
         // request random number from Chainlink VRF | 2 transaction process
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
