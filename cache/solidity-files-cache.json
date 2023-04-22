@@ -304,10 +304,10 @@
         "LinkTokenInterface"
       ]
     },
-    "C:\\Users\\olivi\\OneDrive\\Pulpit\\smartcontract-lottery\\contracts\\test\\VRFCOoordinatorV2.sol": {
-      "lastModificationDate": 1682186803665,
+    "C:\\Users\\olivi\\OneDrive\\Pulpit\\smartcontract-lottery\\contracts\\test\\VRFCoordinatorV2.sol": {
+      "lastModificationDate": 1682189914347,
       "contentHash": "2c3758991ff119d0c9595a813af5acb6",
-      "sourceName": "contracts/test/VRFCOoordinatorV2.sol",
+      "sourceName": "contracts/test/VRFCoordinatorV2.sol",
       "solcConfig": {
         "version": "0.8.7",
         "settings": {
