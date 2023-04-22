@@ -1,6 +1,7 @@
 const { network, companionNetworks } = require("hardhat");
 const { developmentChains, networkConfig } = require("../helper-hardhat.config");
 const { verify } = require("../helper-hardhat.config");
+const ethers = require('ethers');
 
 const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("30")
 
