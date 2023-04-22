@@ -20,7 +20,7 @@ const { assert } = require("chai");
             it('initializes the Raffle correctly', async function () {
                 const raffleState = await raffle.getRaffleState();
                 const interval = await raffle.getInterval();
-                assert.equal(reffleState.toString(), "0")
+                assert.equal(raffleState.toString(), "0")
                 assert.equal(interval.toString(), networkConfig[chainId]["interval"])
             })
         })
