@@ -28,8 +28,14 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat.confi
                 assert.equal(raffleState, "0")
                 assert.equal(
                     interval.toString(),
-                    networkConfig[network.config.chainId]["keepersUpdateInterval"]
+                    networkConfig[network.config.chainId]["interval"]
                 )
+            })
+        })
+
+        describe("enterRaffle", async function () {
+            it("reverts when you don't pay enough", async function () {
+                await expect(raffle.enterRaffle()).to.be.revertedWith("Raffle__NotEnoughETHEntered")
             })
         })
     })
