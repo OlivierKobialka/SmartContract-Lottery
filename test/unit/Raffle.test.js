@@ -137,7 +137,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
 
             // This test is too big...
             // This test simulates users entering the raffle and wraps the entire functionality of the raffle
-            // inside a promise that will resolve if everything is successful.
+            // inside <a promise that will resolve if everything is successful.
             // An event listener for the WinnerPicked is set up
             // Mocks of chainlink keepers and vrf coordinator are used to kickoff this winnerPicked event
             // All the assertions are done once the WinnerPicked event is fired
