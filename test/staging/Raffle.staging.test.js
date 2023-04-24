@@ -12,4 +12,8 @@ developmentChains.includes(network.name)
             raffle = raffleContract.connect(player)
             raffleEntranceFee = await raffle.getEntranceFee()
         })
+
+        describe("fullfillRandomWords", function () {
+            isCallTrace("works with live ChaainLink Keepers and chainlink VRF, we get a roandom winner")
+        })
     })
