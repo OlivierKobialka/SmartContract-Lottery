@@ -5,7 +5,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat.confi
 !developmentChains.includes(network.name)
     ? describe.skip
     : describe("Raffle Unit Tests", function () {
-        let raffle, raffleContract, vrfCoordinatorV2Mock, raffleEntranceFee, interval, player // , deployer
+        let raffle, raffleContract, vrfCoordinatorV2Mock, raffleEntranceFee, interval, player, deployer
 
         beforeEach(async () => {
             accounts = await ethers.getSigners() // could also do with getNamedAccounts
@@ -18,6 +18,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat.confi
             raffleEntranceFee = await raffle.getEntranceFee()
             interval = await raffle.getInterval()
         })
+
 
         describe("constructor", function () {
             it("initializes the raffle correctly", async () => {
@@ -36,6 +37,29 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat.confi
         describe("enterRaffle", async function () {
             it("reverts when you don't pay enough", async function () {
                 await expect(raffle.enterRaffle()).to.be.revertedWith("Raffle__NotEnoughETHEntered")
+            })
+            it("records players when they enter", async function () {
+                // raffleEntranceFee
+                await raffle.enterRaffle({ value: raffleEntranceFee })
+                const playerFromContract = await raffle.getPlayer(0)
+                assert.equal(playerFromContract, deployer)
+            })
+            it("emits on event", async function () {
+                await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.emit(raffleContract, "RaffleEnter")
+            })
+            it("doesnt allow enteance whem reffle in calculating", async function () {
+                await raffle.enterRaffle({ value: raffleEntranceFee })
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                await network.provider.send("evm_mine", [])
+
+                await raffle.performUpkeep([])
+                await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.be.revertedWith("Raffle__NotOpen")
+            })
+        })
+        describe("checkUpkeep", async function () {
+            it("returns false if people havent dent any ETH", async function () {
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                await network.provider.send("evm_mine", [])
             })
         })
     })

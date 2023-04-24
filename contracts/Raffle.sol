@@ -163,7 +163,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         emit WinnerPicked(recentWinner);
     }
 
-    /** Getter Functions */
+    /* Getter Functions */
 
     function getRaffleState() public view returns (RaffleState) {
         return s_raffleState;
