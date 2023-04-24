@@ -26,7 +26,13 @@ developmentChains.includes(network.name)
                         try {
                             const recentWinner = await raffle.getRecentWinner()
                             const raffleState = await raffle.getRaffleState()
-                            const einnerBalance = await raffle.getRaffleBalance()
+                            const winnerEndingBalance = await raffle.getRaffleBalance()
+                            const endingTimeStamp = await raffle.getLatestTimeStamp()
+
+                            await expect(raffle.getPPlayer(0)).to.be.reverted
+                            assert.equal(recentWinner.toString(), accounts[0].address)
+                            assert.equal(raffleState, 0)
+                            assert.equal(winnerEndingBalance.toString(), winnerStartingBalance.add(raffleEntranceFee).toString())
                         } catch (error) {
                             console.log(error);
                             reject(error)
@@ -34,7 +40,7 @@ developmentChains.includes(network.name)
                     })
 
                     await raffle.enterRaffle({ value: raffleEntranceFee })
-
+                    const winnerStartingBalance = await account[0].getBalance()
 
                 })
             })
