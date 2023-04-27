@@ -10,7 +10,7 @@ export default function Header() {
 		if (isWeb3Enabled) return;
 		if (typeof window !== "undefined") {
 			if (window.localStorage.getItem("connected")) {
-				// enableWeb3();
+				enableWeb3();
 			}
 		}
 		enableWeb3();
