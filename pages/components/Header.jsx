@@ -1,5 +1,6 @@
 import { useMoralis } from "react-moralis";
 import { useEffect } from "react";
+// import { Moralis } from "moralis";
 
 export default function Header() {
 	const { enableWeb3, account, isWeb3Enabled, Moralis, deactivateWeb3 } =
