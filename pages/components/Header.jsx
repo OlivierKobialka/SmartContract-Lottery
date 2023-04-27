@@ -17,7 +17,7 @@ export default function Header() {
 		if (isWeb3Enabled) return;
 		if (typeof window !== "undefined") {
 			if (window.localStorage.getItem("connected")) {
-				enableWeb3();
+				// enableWeb3();
 			}
 		}
 		enableWeb3();
@@ -35,7 +35,7 @@ export default function Header() {
 	}, []);
 
 	return (
-		<div>
+		<div className="mb-10">
 			{account ? (
 				<div className='bg-blue-500 hover:bg-blue-700 w-44 text-center text-white font-bold py-2 px-4 rounded'>
 					Connected to {account.slice(0, 6)}...{account.slice(-4)}

@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Header } from './components'
+import { Header, Header2 } from './components'
 
 
 export default function Home() {
@@ -9,7 +9,8 @@ export default function Home() {
         <title>Smart Contract Lottery ⇋</title>
         <meta name="description" content="Smart Contract Lottery" />
       </Head>
-      <Header />
+      {/* <Header /> */}
+      <Header2 />
     </div>
   )
 }
