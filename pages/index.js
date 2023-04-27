@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Header, Header2 } from './components'
+import { Header2, LotteryEntrance } from './components'
 
 
 export default function Home() {
@@ -11,6 +11,7 @@ export default function Home() {
       </Head>
       {/* <Header /> */}
       <Header2 />
+      <LotteryEntrance />
     </div>
   )
 }
