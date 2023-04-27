@@ -1,10 +1,17 @@
 import { useMoralis } from "react-moralis";
 import { useEffect } from "react";
+import clsx from "clsx";
 // import { Moralis } from "moralis";
 
 export default function Header() {
-	const { enableWeb3, account, isWeb3Enabled, Moralis, deactivateWeb3 } =
-		useMoralis();
+	const {
+		enableWeb3,
+		account,
+		isWeb3Enabled,
+		Moralis,
+		deactivateWeb3,
+		isWeb3EnableLoading,
+	} = useMoralis();
 
 	useEffect(() => {
 		if (isWeb3Enabled) return;
@@ -35,13 +42,14 @@ export default function Header() {
 				</div>
 			) : (
 				<button
-					className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+					className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
 					onClick={async () => {
 						await enableWeb3();
 						if (typeof window !== "undefined") {
 							window.localStorage.setItem("connected", "injected");
 						}
-					}}>
+					}}
+					disabled={isWeb3EnableLoading}>
 					Connect Wallet
 				</button>
 			)}
